@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portal | fkk.ac.th/punn3593</title>
+    
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Dark Mode Theme (Default) */
+            --bg-color: #0c0c10;
+            --card-bg: #181822;
+            --card-hover-bg: #222230;
+            --text-primary: #ffffff;
+            --text-secondary: #9a9ab0;
+            --accent-pink: #ff2a85;
+            --accent-pink-hover: #ff539e;
+            --accent-glow: rgba(255, 42, 133, 0.28);
+            --border-color: #2a2a3a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --input-bg: #12121a;
+            --error-color: #ff4d4d;
+            --lock-overlay-bg: rgba(12, 12, 16, 0.88);
+        }
+
+        [data-theme="light"] {
+            /* Light Mode Theme */
+            --bg-color: #f2f3f7;
+            --card-bg: #ffffff;
+            --card-hover-bg: #fff0f6;
+            --text-primary: #121218;
+            --text-secondary: #606070;
+            --accent-pink: #e60067;
+            --accent-pink-hover: #ff2a85;
+            --accent-glow: rgba(230, 0, 103, 0.18);
+            --border-color: #e2e2ea;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --input-bg: #f8f8fc;
+            --error-color: #d92525;
+            --lock-overlay-bg: rgba(242, 243, 247, 0.90);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 880px;
+            margin: 0 auto;
+            opacity: 1;
+            transition: filter 0.4s ease, opacity 0.4s ease;
+        }
+
+        .container.locked {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-pink), #b3004b);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.35rem;
+            box-shadow: 0 4px 18px var(--accent-glow);
+        }
+
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-title span {
+            color: var(--accent-pink);
+        }
+
+        .brand-sub {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .control-btn:hover {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            transform: translateY(-2px);
+        }
+
+        /* Clock Widget */
+        .clock-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.2rem 1.5rem;
+            border-radius: 26px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .clock-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-pink), transparent);
+        }
+
+        .time-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+        }
+
+        .time-display .seconds {
+            font-size: 2rem;
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        .date-display {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        /* Grid Layout & Cards */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 24px;
+            padding: 1.8rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            min-height: 160px;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-6px);
+            background-color: var(--card-hover-bg);
+            border-color: var(--accent-pink);
+            box-shadow: 0 14px 32px var(--accent-glow);
+        }
+
+        .card-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            color: var(--accent-pink);
+        }
+
+        .menu-card:hover .card-icon-wrapper {
+            background: var(--accent-pink);
+            border-color: var(--accent-pink);
+            transform: scale(1.08);
+        }
+
+        .menu-card:hover .card-icon {
+            color: #ffffff;
+        }
+
+        .card-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .card-arrow {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            background: var(--bg-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .menu-card:hover .card-arrow {
+            color: #ffffff;
+            background: var(--accent-pink);
+            border-color: var(--accent-pink);
+            transform: translateX(4px);
+        }
+
+        /* Lock Screen Overlay */
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--lock-overlay-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            padding: 1.5rem;
+        }
+
+        .lock-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .lock-box {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            padding: 2.8rem 2.2rem;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 50px var(--shadow-color), 0 0 40px var(--accent-glow);
+            position: relative;
+        }
+
+        .lock-avatar {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--accent-pink), #800033);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            color: #ffffff;
+            font-size: 2rem;
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .lock-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .lock-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.8rem;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 14px 48px 14px 18px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-family: 'Prompt', sans-serif;
+            outline: none;
+        }
+
+        .password-input:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--accent-pink);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, var(--accent-pink), #c70058);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        .unlock-btn:hover {
+            background: linear-gradient(135deg, var(--accent-pink-hover), #e60067);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            min-height: 22px;
+            margin-top: -0.4rem;
+            font-weight: 500;
+            display: opacity;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Shake animation for wrong password */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-pink);
+            text-decoration: none;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .time-display {
+                font-size: 2.6rem;
+            }
+            .time-display .seconds {
+                font-size: 1.5rem;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .lock-box {
+                padding: 2rem 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Password Lock Screen Overlay -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-box" id="lockBox">
+            <div class="lock-avatar">
+                <i class="fa-solid fa-lock" id="lockAvatarIcon"></i>
+            </div>
+            <div class="lock-title">ยืนยันตัวตน</div>
+            <div class="lock-subtitle">กรุณาใส่รหัสผ่านเพื่อเข้าใช้งานระบบ</div>
+            
+            <form class="password-form" onsubmit="handleUnlock(event)">
+                <div class="input-group">
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        class="password-input" 
+                        placeholder="ป้อนรหัสผ่าน..." 
+                        autocomplete="current-password"
+                        required
+                    />
+                    <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility()" aria-label="แสดง/ซ่อนรหัสผ่าน">
+                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <button type="submit" class="unlock-btn">
+                    <span>ปลดล็อกเข้าสู่ระบบ</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="container locked" id="mainContainer">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-grid-2"></i>
+                </div>
+                <div class="brand-info">
+                    <div class="brand-title">Punn<span> Workspace</span></div>
+                    <div class="brand-sub">fkk.ac.th/punn3593</div>
+                </div>
+            </div>
+            
+            <div class="header-controls">
+                <button class="control-btn" onclick="lockPortal()" title="ล็อกหน้าจอ">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>ล็อกระบบ</span>
+                </button>
+                <button class="control-btn" id="themeToggleBtn" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span id="themeText">โหมดมืด</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Live Clock & Date Section -->
+        <section class="clock-section">
+            <div class="time-display" id="clockTime">00:00:<span class="seconds">00</span></div>
+            <div class="date-display" id="clockDate">กำลังโหลดวันที่...</div>
+        </section>
+
+        <!-- Menu Grid -->
+        <main class="grid-container">
+            
+            <!-- 1. เอกสารส่วนตัว -->
+            <a href="https://drive.google.com/drive/folders/1XRBtnca1fBzqq7t5hNuSDhXVQ6aL4wTF" target="_blank" rel="noopener noreferrer" class="menu-card">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <i class="fa-solid fa-folder-closed card-icon"></i>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-title">เอกสารส่วนตัว</div>
+                    <div class="card-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. บันทึกส่วนตัว -->
+            <a href="https://docs.google.com/document/d/1uugT0NtSyHcUHhy-Din9LI_wm5WSPAgugg9RXKFghjQ/edit?tab=t.0" target="_blank" rel="noopener noreferrer" class="menu-card">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <i class="fa-solid fa-file-signature card-icon"></i>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-title">บันทึกส่วนตัว</div>
+                    <div class="card-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. เอกสารรอพิมพ์ -->
+            <a href="https://drive.google.com/drive/folders/1CWHqkt-FIRa1x-_NmVvAXK8LkqHmb2Jc" target="_blank" rel="noopener noreferrer" class="menu-card">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <i class="fa-solid fa-print card-icon"></i>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-title">เอกสารรอพิมพ์</div>
+                    <div class="card-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. ตารางสอน -->
+            <a href="https://drive.google.com/drive/folders/1E7jSs3T0HKoKaaidBwoGSLQgEf3iQ_i3" target="_blank" rel="noopener noreferrer" class="menu-card">
+                <div>
+                    <div class="card-icon-wrapper">
+                        <i class="fa-solid fa-calendar-days card-icon"></i>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="card-title">ตารางสอน</div>
+                    <div class="card-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; Personal Portal | <a href="https://fkk.ac.th/punn3593" target="_blank">fkk.ac.th/punn3593</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Password Security Constant รหัสผ่าน
+        const SECRET_PASS = '30032525';
+        const AUTH_KEY = 'punn_portal_authenticated';
+
+        // DOM Element References
+        const lockScreen = document.getElementById('lockScreen');
+        const lockBox = document.getElementById('lockBox');
+        const mainContainer = document.getElementById('mainContainer');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        // Check Authentication Status on Page Load
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem(AUTH_KEY);
+            if (isAuth === 'true') {
+                unlockPortalUI();
+            } else {
+                lockPortalUI();
+            }
+        }
+
+        // Handle Unlock Password Verification
+        function handleUnlock(event) {
+            event.preventDefault();
+            const inputVal = passwordInput.value.trim();
+
+            if (inputVal === SECRET_PASS) {
+                sessionStorage.setItem(AUTH_KEY, 'true');
+                errorMessage.textContent = '';
+                passwordInput.value = '';
+                unlockPortalUI();
+            } else {
+                showError('รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+            }
+        }
+
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            lockBox.classList.remove('shake');
+            // Trigger reflow to restart animation
+            void lockBox.offsetWidth;
+            lockBox.classList.add('shake');
+            passwordInput.focus();
+            passwordInput.select();
+        }
+
+        function unlockPortalUI() {
+            lockScreen.classList.add('hidden');
+            mainContainer.classList.remove('locked');
+        }
+
+        function lockPortalUI() {
+            lockScreen.classList.remove('hidden');
+            mainContainer.classList.add('locked');
+            setTimeout(() => {
+                passwordInput.focus();
+            }, 100);
+        }
+
+        // Manual Lock / Logout Function
+        function lockPortal() {
+            sessionStorage.removeItem(AUTH_KEY);
+            errorMessage.textContent = '';
+            passwordInput.value = '';
+            lockPortalUI();
+        }
+
+        // Toggle Password Show/Hide
+        function togglePasswordVisibility() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.className = 'fa-solid fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        // Live Clock with Thai Date Formatting
+        function updateClock() {
+            const now = new Date();
+            
+            // Format Hours, Minutes, Seconds
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clockTime').innerHTML = `${hours}:${minutes}:<span class="seconds">${seconds}</span>`;
+
+            // Format Thai Date
+            const daysTh = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+            const monthsTh = [
+                'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+            ];
+
+            const dayName = daysTh[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = monthsTh[now.getMonth()];
+            const yearTh = now.getFullYear() + 543; // Convert to Thai BE year
+
+            const formattedDate = `${dayName}ที่ ${dayNum} ${monthName} ${yearTh}`;
+            document.getElementById('clockDate').textContent = formattedDate;
+        }
+
+        // Theme Toggle System (Dark / Light Mode)
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('punn_theme', newTheme);
+            updateThemeUI(newTheme);
+        }
+
+        function updateThemeUI(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (theme === 'light') {
+                icon.className = 'fa-solid fa-sun';
+                text.textContent = 'โหมดสว่าง';
+            } else {
+                icon.className = 'fa-solid fa-moon';
+                text.textContent = 'โหมดมืด';
+            }
+        }
+
+        // Initialize Settings on Load
+        window.onload = function() {
+            // Clock Initialization
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Theme Preference Initialization
+            const savedTheme = localStorage.getItem('punn_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeUI(savedTheme);
+
+            // Authentication Check
+            checkAuth();
+        };
+    </script>
+</body>
+</html>
