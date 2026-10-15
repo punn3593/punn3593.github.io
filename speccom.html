@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สเปคคอมฯ ตั้งโต๊ะ งบประมาณ 20,000 บาท (Advice)</title>
+    
+    <!-- Google Fonts: Prompt & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --card-hover-bg: #1c2129;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-color: #38bdf8;
+            --accent-orange: #f97316;
+            --accent-green: #22c55e;
+            --border-color: #30363d;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --toast-bg: #1f2937;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-hover-bg: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-color: #0284c7;
+            --accent-orange: #ea580c;
+            --accent-green: #16a34a;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --toast-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- Header --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-orange), #b91c1c);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+        }
+
+        .brand-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* --- Total Summary Card --- */
+        .summary-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-green);
+        }
+
+        .summary-info h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-info p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .total-price-box {
+            text-align: right;
+        }
+
+        .total-price-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .total-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* --- Spec Table --- */
+        .spec-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 140px 1fr 120px 110px;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .spec-item:hover {
+            background-color: var(--card-hover-bg);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .category-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent-color);
+        }
+
+        .category-tag i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .item-name {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .item-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            text-align: right;
+        }
+
+        .btn-link {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-color);
+            padding: 8px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-link:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .spec-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .category-tag {
+                grid-column: 1 / -1;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 0.4rem;
+            }
+            .item-name {
+                grid-column: 1 / -1;
+            }
+            .item-price {
+                text-align: left;
+            }
+            .total-price-box {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-desktop"></i>
+                </div>
+                <div>
+                    <div class="brand-title">สเปคคอมฯ ตั้งโต๊ะ 20,000 บาท</div>
+                    <div class="brand-sub">ประมาณการราคาจัดสเปคสินค้า Advice</div>
+                </div>
+            </div>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+                <i class="fa-solid fa-sun"></i> โหมดสว่าง
+            </button>
+        </header>
+
+        <!-- Summary Banner -->
+        <div class="summary-card">
+            <div class="summary-info">
+                <h2><i class="fa-solid fa-circle-check" style="color:var(--accent-green)"></i> ราคารวมสุทธิทั้งชุด</h2>
+                <p>คอมพิวเตอร์ครบเซ็ต + จอ 144Hz + เมาส์ / คีย์บอร์ด</p>
+            </div>
+            <div class="total-price-box">
+                <div class="total-price-label">งบประมาณรวมทั้งสิ้น</div>
+                <div class="total-price">18,600 ฿</div>
+            </div>
+        </div>
+
+        <!-- Spec List -->
+        <div class="spec-grid">
+
+            <!-- CPU -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-microchip"></i> CPU</div>
+                <div class="item-name">AMD AM4 Ryzen 5 5500GT</div>
+                <div class="item-price">4,590 ฿</div>
+                <a href="https://www.advice.co.th/product/cpu/amd-am4/cpu-amd-am4-ryzen-5-5500gt-next-" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Mainboard -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-circuit-board"></i> Mainboard</div>
+                <div class="item-name">MSI A520M-A PRO</div>
+                <div class="item-price">1,490 ฿</div>
+                <a href="https://www.advice.co.th/product/mainboard/amd-am4-a320-a520-/mainboard-am4-msi-a520m-a-pro-ddr4" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- RAM -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-memory"></i> RAM</div>
+                <div class="item-name">16GB (8GBx2) DDR4 3200MHz Hynix</div>
+                <div class="item-price">4,800 ฿</div>
+                <a href="https://www.advice.co.th/product/ram-for-pc/pc-ddr4-3200-/ram-ddr4-3200-8gb-hynix-8-chip" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- SSD -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-hard-drive"></i> SSD</div>
+                <div class="item-name">512 GB SSD M.2 PCIe 3.0 HIKSEMI CITY (E1000)</div>
+                <div class="item-price">3,050 ฿</div>
+                <a href="https://www.advice.co.th/product/ssd-solid-state-drive-/ssd-m-2-sata-512-gb-up/480-gb-ssd-m-2-sata-apacer-ast280-apssdap480gast280-1-" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Power Supply -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-plug"></i> Power Supply</div>
+                <div class="item-name">Tsunami EX600 (600W)</div>
+                <div class="item-price">870 ฿</div>
+                <a href="https://www.advice.co.th/product/power-supply/400w-600w-/power-supply-600w-tsunami-ex600-deep-space" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Case -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-box"></i> Case</div>
+                <div class="item-name">NP VIKINGS 1902 Black</div>
+                <div class="item-price">990 ฿</div>
+                <a href="https://www.advice.co.th/product/case/matx-case/matx-case-np-vikings-1902-black" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Monitor -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-tv"></i> Monitor</div>
+                <div class="item-name">23.8" GIGABYTE GS24F14 IPS 144Hz</div>
+                <div class="item-price">2,320 ฿</div>
+                <a href="https://www.advice.co.th/product/monitor/monitor-23-25-/monitor-23-8-gigabyte-gs24f14-ips-dp-hdmi-144hz" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <!-- Mouse + Keyboard -->
+            <div class="spec-item">
+                <div class="category-tag"><i class="fa-solid fa-keyboard"></i> Gear</div>
+                <div class="item-name">Logitech MK200 Black (Mouse + Keyboard)</div>
+                <div class="item-price">490 ฿</div>
+                <a href="https://www.advice.co.th/product/combo-set/combo-set-wired-%E0%B8%A1%E0%B8%B5%E0%B8%AA%E0%B8%A2-/combo-set-logitech-mk200-black" target="_blank" class="btn-link">
+                    ดูสินค้า <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>© ประมาณการราคาจัดสเปคคอมพิวเตอร์ | อ้างอิงราคาจาก Advice</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('theme-btn');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                btn.innerHTML = '<i class="fa-solid fa-moon"></i> โหมดมืด';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                btn.innerHTML = '<i class="fa-solid fa-sun"></i> โหมดสว่าง';
+            }
+        }
+    </script>
+</body>
+</html>
